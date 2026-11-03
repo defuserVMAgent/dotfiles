@@ -1,0 +1,5 @@
+# ya-pkg-managed plugins are restored via `ya pkg install` (see package.toml);
+# local hand-written plugins are tracked explicitly.
+plugins/*
+!plugins/dropbox-cloud.yazi/
+!plugins/clippy.yazi/

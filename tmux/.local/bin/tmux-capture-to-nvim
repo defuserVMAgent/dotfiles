@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# Capture tmux pane scrollback with SGR colors preserved, strip every other
+# control sequence (cursor moves, OSC, charset, CR, BS), and open it in nvim
+# via the ansi_capture helper.
+set -euo pipefail
+
+# tmux run-shell starts with a minimal PATH; ensure Homebrew bins are reachable.
+export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+
+pane="${1:-}"
+[[ -z "$pane" ]] && { echo "usage: $0 <pane-id>" >&2; exit 1; }
+
+f=$(mktemp -t tmux-capture.XXXXXX)
+
+tmux capture-pane -ep -S - -E - -t "$pane" | perl -pe '
+  s/\e\[([\x30-\x3F]*[\x20-\x2F]*)([\x40-\x7E])/$2 eq "m" ? "\e[${1}m" : ""/ge;
+  s/\e\][^\a\e]*(?:\a|\e\\)//g;
+  s/\e[()][\x20-\x7E]//g;
+  s/\e[ABCDEFGHIJKLMNOPQRSTUVWXYZ\\^_=>78@]//g;
+  tr/\r\b//d;
+' > "$f"
+
+tmux new-window "nvim -c 'lua require[[config.ansi_capture]].open[[$f]]'; rm -f '$f'"

@@ -1,0 +1,21 @@
+# Git reads this (XDG) file in addition to ~/.gitconfig, which keeps identity
+# and credential helpers. Only delta lives here.
+
+[core]
+	pager = delta
+
+[interactive]
+	diffFilter = delta --color-only
+
+[merge]
+	conflictStyle = zdiff3
+
+[delta]
+	line-numbers = true
+	dark = true
+	# bat theme built from bat/.config/bat/themes (run `bat cache --build`)
+	syntax-theme = tokyonight_night
+
+# diff add/remove colors — swap this include to change theme
+[include]
+	path = delta-tokyonight_night.gitconfig

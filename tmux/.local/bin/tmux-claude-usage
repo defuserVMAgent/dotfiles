@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+# tmux status-right segment: Claude Code plan usage (5-hour + weekly windows),
+# read from the cache that ~/.claude/statusline.sh harvests on every Claude
+# render. Pure bash — this runs on every tmux status redraw. Prints nothing
+# when there's no cache yet.
+
+set -uo pipefail
+
+# used_percentage is a dot-decimal float; under a comma-radix locale
+# printf '%.0f' would fail to parse it and silently drop the window.
+export LC_ALL=C
+
+CACHE="$HOME/.cache/claude-usage/usage"
+[ -f "$CACHE" ] || exit 0
+
+five_pct="" five_reset="" seven_pct="" seven_reset=""
+while IFS='=' read -r key val; do
+  case "$key" in
+  FIVE_HOUR_PCT) five_pct="$val" ;;
+  FIVE_HOUR_RESET) five_reset="$val" ;;
+  SEVEN_DAY_PCT) seven_pct="$val" ;;
+  SEVEN_DAY_RESET) seven_reset="$val" ;;
+  esac
+done <"$CACHE"
+
+now=$(date +%s)
+
+# "2 hr 10 min", "4 days 3 hr", "45 min"
+human_reset() {
+  local s="$1" d h m
+  ((s < 0)) && s=0
+  d=$((s / 86400)); h=$(((s % 86400) / 3600)); m=$(((s % 3600) / 60))
+  if ((d > 0)); then
+    if ((h > 0)); then printf '%d day%s %d hr' "$d" "$([ "$d" -ne 1 ] && printf s)" "$h"
+    else printf '%d day%s' "$d" "$([ "$d" -ne 1 ] && printf s)"; fi
+  elif ((h > 0)); then
+    if ((m > 0)); then printf '%d hr %d min' "$h" "$m"; else printf '%d hr' "$h"; fi
+  else
+    printf '%d min' "$m"
+  fi
+}
+
+# One window: "5h ▓▓░░░ 42% · 2 hr 10 min", colored by fullness.
+# Args: label percent reset_epoch
+window() {
+  local label="$1" pct_raw="$2" reset_epoch="$3" pct
+  [ -n "$pct_raw" ] || return 1
+  printf -v pct '%.0f' "$pct_raw" 2>/dev/null || return 1
+
+  local have_reset=0
+  [[ "$reset_epoch" =~ ^[0-9]+$ ]] && have_reset=1
+
+  # Self-expiring: past resets_at the window has provably rolled over — show 0%
+  # instead of a stale number the harvester can't refresh while Claude is idle.
+  if [ "$have_reset" = 1 ] && [ "$now" -ge "$reset_epoch" ]; then
+    pct=0
+    have_reset=0
+  fi
+
+  local width=5 filled bar="" i
+  filled=$(((pct * width + 50) / 100))
+  ((filled < 0)) && filled=0
+  ((filled > width)) && filled=width
+  for ((i = 0; i < filled; i++)); do bar+="▓"; done
+  for ((i = filled; i < width; i++)); do bar+="░"; done
+
+  local color='#565b66'
+  ((pct >= 90)) && color='#f7768e' || { ((pct >= 70)) && color='#e0af68'; }
+
+  local text="$label $bar ${pct}%"
+  [ "$have_reset" = 1 ] && text+=" · $(human_reset $((reset_epoch - now)))"
+  printf '#[fg=%s]%s#[default]' "$color" "$text"
+}
+
+segments=()
+s=$(window '5h' "$five_pct" "$five_reset") && segments+=("$s")
+s=$(window 'wk' "$seven_pct" "$seven_reset") && segments+=("$s")
+((${#segments[@]})) || exit 0
+
+out=""
+for i in "${!segments[@]}"; do
+  ((i > 0)) && out+='  '
+  out+="${segments[$i]}"
+done
+printf '%s' "$out"

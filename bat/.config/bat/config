@@ -1,0 +1,3 @@
+# Theme lives in themes/ (tokyonight extras). After adding/changing a theme
+# file, rebuild the cache — delta reads bat's cache too:  bat cache --build
+--theme="tokyonight_night"

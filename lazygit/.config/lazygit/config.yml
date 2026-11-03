@@ -1,0 +1,39 @@
+# Theme: tokyonight night (folke/tokyonight.nvim extras/lazygit).
+# NOTE: on macOS lazygit reads ~/Library/Application Support/lazygit/config.yml,
+# which is symlinked to this file (see README).
+gui:
+  nerdFontsVersion: "3"
+  theme:
+    activeBorderColor:
+      - "#ff9e64"
+      - "bold"
+    inactiveBorderColor:
+      - "#27a1b9"
+    searchingActiveBorderColor:
+      - "#ff9e64"
+      - "bold"
+    optionsTextColor:
+      - "#7aa2f7"
+    selectedLineBgColor:
+      - "#283457"
+    cherryPickedCommitFgColor:
+      - "#7aa2f7"
+    cherryPickedCommitBgColor:
+      - "#bb9af7"
+    markedBaseCommitFgColor:
+      - "#7aa2f7"
+    markedBaseCommitBgColor:
+      - "#e0af68"
+    unstagedChangesColor:
+      - "#db4b4b"
+    defaultFgColor:
+      - "#c0caf5"
+
+git:
+  diffRenderers:
+    # delta reads its colors/syntax theme from git/.config/git/config;
+    # side-by-side when the diff pane is wide enough. `|` cycles renderers.
+    - command: delta --paging=never {{if gt .width 160}}--side-by-side{{end}}
+      name: delta
+    - type: rawGit
+      name: default

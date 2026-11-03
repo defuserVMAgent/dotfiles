@@ -1,0 +1,49 @@
+[[mgr.prepend_keymap]]
+on   = [ "J" ]
+run  = "arrow 3"
+desc = "Move cursor down 3"
+
+[[mgr.prepend_keymap]]
+on   = [ "K" ]
+run  = "arrow -3"
+desc = "Move cursor up 3"
+
+[[mgr.prepend_keymap]]
+on   = [ "g", "p" ]
+run  = "cd ~/Projects"
+desc = "Go to Projects"
+
+[[mgr.prepend_keymap]]
+on   = [ "g", "l" ]
+run  = 'shell "lazygit" --block'
+desc = "Open lazygit"
+
+[[mgr.prepend_keymap]]
+on   = "y"
+run  = [ "yank", "plugin clippy" ]
+desc = "Yank files to system clipboard (as file references)"
+
+[[mgr.prepend_keymap]]
+on   = [ "<C-v>" ]
+run  = 'shell "~/.config/yazi/scripts/paste-clipboard.sh \"$PWD\"" --confirm'
+desc = "Paste files from macOS clipboard (e.g. copied in Finder)"
+
+[[mgr.prepend_keymap]]
+on   = "C"
+run  = '''shell 'out="archive-$(date +%%Y%%m%%d-%%H%%M%%S).zip"; for f in %s; do zip -r "$out" "${f##*/}"; done' --confirm'''
+desc = "Zip selected files"
+
+[[mgr.prepend_keymap]]
+on   = [ "g", "e" ]
+run  = 'shell "nvim %s" --block'
+desc = "Open selection (or hovered file) in nvim"
+
+[[mgr.prepend_keymap]]
+on   = [ "g", "E" ]
+run  = '''shell 'nvim %s -c "if argc() < 2 | echohl ErrorMsg | echomsg \"CodeDiff: select 2 files first (space to mark)\" | echohl None | else | execute \"CodeDiff file \" . fnameescape(argv(0)) . \" \" . fnameescape(argv(1)) | endif"' --block'''
+desc = "Diff two selected files in CodeDiff"
+
+[[mgr.prepend_keymap]]
+on   = [ "g", "o" ]
+run  = 'shell "open -R %h" --confirm'
+desc = "Reveal hovered in Finder"

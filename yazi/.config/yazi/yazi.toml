@@ -1,0 +1,86 @@
+[opener]
+edit = [
+  { run = 'nvim %s', block = true, desc = "nvim" },
+]
+fusion = [
+  { run = 'open -a "/Applications/Blackmagic Fusion 21/Fusion.app" %s', orphan = true, desc = "Fusion 21" },
+  { run = 'open -a "/Applications/Blackmagic Fusion 20/Fusion.app" %s', orphan = true, desc = "Fusion 20" },
+  { run = 'open -a "/Applications/Blackmagic Fusion 19/Fusion.app" %s', orphan = true, desc = "Fusion 19" },
+]
+after_effects = [
+  { run = 'open -a "/Applications/Adobe After Effects 2026/Adobe After Effects 2026.app" %s',        orphan = true, desc = "After Effects 2026"       },
+  { run = 'open -a "/Applications/Adobe After Effects 2025/Adobe After Effects 2025.app" %s',        orphan = true, desc = "After Effects 2025"       },
+  { run = 'open -a "/Applications/Adobe After Effects 2024/Adobe After Effects 2024.app" %s',        orphan = true, desc = "After Effects 2024"       },
+  { run = 'open -a "/Applications/Adobe After Effects 2023/Adobe After Effects 2023.app" %s',        orphan = true, desc = "After Effects 2023"       },
+  { run = 'open -a "/Applications/Adobe After Effects 2022/Adobe After Effects 2022.app" %s',        orphan = true, desc = "After Effects 2022"       },
+  { run = 'open -a "/Applications/Adobe After Effects (Beta)/Adobe After Effects (Beta).app" %s',    orphan = true, desc = "After Effects (Beta)"     },
+]
+premiere_pro = [
+  { run = 'open -a "/Applications/Adobe Premiere Pro 2026/Adobe Premiere Pro 2026.app" %s',          orphan = true, desc = "Premiere Pro 2026"       },
+  { run = 'open -a "/Applications/Adobe Premiere Pro 2025/Adobe Premiere Pro 2025.app" %s',          orphan = true, desc = "Premiere Pro 2025"       },
+  { run = 'open -a "/Applications/Adobe Premiere Pro 2024/Adobe Premiere Pro 2024.app" %s',          orphan = true, desc = "Premiere Pro 2024"       },
+  { run = 'open -a "/Applications/Adobe Premiere Pro 2023/Adobe Premiere Pro 2023.app" %s',          orphan = true, desc = "Premiere Pro 2023"       },
+  { run = 'open -a "/Applications/Adobe Premiere Pro 2022/Adobe Premiere Pro 2022.app" %s',          orphan = true, desc = "Premiere Pro 2022"       },
+  { run = 'open -a "/Applications/Adobe Premiere Pro 2021/Adobe Premiere Pro 2021.app" %s',          orphan = true, desc = "Premiere Pro 2021"       },
+  { run = 'open -a "/Applications/Adobe Premiere Pro (Beta)/Adobe Premiere Pro (Beta).app" %s',      orphan = true, desc = "Premiere Pro (Beta)"     },
+]
+photoshop = [
+  { run = 'open -a "/Applications/Adobe Photoshop 2026/Adobe Photoshop 2026.app" %s',                orphan = true, desc = "Photoshop 2026"          },
+  { run = 'open -a "/Applications/Adobe Photoshop 2025/Adobe Photoshop 2025.app" %s',                orphan = true, desc = "Photoshop 2025"          },
+  { run = 'open -a "/Applications/Adobe Photoshop 2024/Adobe Photoshop 2024.app" %s',                orphan = true, desc = "Photoshop 2024"          },
+  { run = 'open -a "/Applications/Adobe Photoshop 2023/Adobe Photoshop 2023.app" %s',                orphan = true, desc = "Photoshop 2023"          },
+]
+media_encoder = [
+  { run = 'open -a "/Applications/Adobe Media Encoder 2026/Adobe Media Encoder 2026.app" %s',        orphan = true, desc = "Media Encoder 2026"      },
+  { run = 'open -a "/Applications/Adobe Media Encoder 2025/Adobe Media Encoder 2025.app" %s',        orphan = true, desc = "Media Encoder 2025"      },
+  { run = 'open -a "/Applications/Adobe Media Encoder 2024/Adobe Media Encoder 2024.app" %s',        orphan = true, desc = "Media Encoder 2024"      },
+  { run = 'open -a "/Applications/Adobe Media Encoder 2023/Adobe Media Encoder 2023.app" %s',        orphan = true, desc = "Media Encoder 2023"      },
+  { run = 'open -a "/Applications/Adobe Media Encoder 2022/Adobe Media Encoder 2022.app" %s',        orphan = true, desc = "Media Encoder 2022"      },
+  { run = 'open -a "/Applications/Adobe Media Encoder 2021/Adobe Media Encoder 2021.app" %s',        orphan = true, desc = "Media Encoder 2021"      },
+  { run = 'open -a "/Applications/Adobe Media Encoder (Beta)/Adobe Media Encoder (Beta).app" %s',    orphan = true, desc = "Media Encoder (Beta)"    },
+]
+cinema4d = [
+  { run = 'open -a "/Applications/Maxon Cinema 4D 2026/Cinema 4D.app" %s',                           orphan = true, desc = "Cinema 4D 2026"          },
+  { run = 'open -a "/Applications/Maxon Cinema 4D 2025/Cinema 4D.app" %s',                           orphan = true, desc = "Cinema 4D 2025"          },
+  { run = 'open -a "/Applications/Maxon Cinema 4D 2024/Cinema 4D.app" %s',                           orphan = true, desc = "Cinema 4D 2024"          },
+  { run = 'open -a "/Applications/Maxon Cinema 4D 2023/Cinema 4D.app" %s',                           orphan = true, desc = "Cinema 4D 2023"          },
+  { run = 'open -a "/Applications/Maxon Cinema 4D R25/Cinema 4D.app" %s',                            orphan = true, desc = "Cinema 4D R25"           },
+  { run = 'open -a "/Applications/Maxon Cinema 4D R22/Cinema 4D.app" %s',                            orphan = true, desc = "Cinema 4D R22"           },
+]
+resolve = [
+  { run = 'open -a "/Applications/DaVinci Resolve/DaVinci Resolve.app" %s',                          orphan = true, desc = "DaVinci Resolve"         },
+]
+word = [
+  { run = 'open -a "/Applications/Microsoft Word.app" %s',                                           orphan = true, desc = "Microsoft Word"          },
+]
+excel = [
+  { run = 'open -a "/Applications/Microsoft Excel.app" %s',                                          orphan = true, desc = "Microsoft Excel"         },
+]
+powerpoint = [
+  { run = 'open -a "/Applications/Microsoft PowerPoint.app" %s',                                     orphan = true, desc = "Microsoft PowerPoint"    },
+]
+pdf = [
+  { run = 'open -a "/System/Applications/Preview.app" %s',                                           orphan = true, desc = "Preview"                 },
+  { run = 'open -a "/Applications/Adobe Acrobat DC/Adobe Acrobat.app" %s',                           orphan = true, desc = "Adobe Acrobat DC"        },
+]
+
+[open]
+prepend_rules = [
+  { url = "*.aep",   use = "after_effects" },
+  { url = "*.aepx",  use = "after_effects" },
+  { url = "*.aet",   use = "after_effects" },
+  { url = "*.comp",  use = "fusion" },
+  { url = "*.prproj", use = "premiere_pro" },
+  { url = "*.psd",   use = "photoshop" },
+  { url = "*.psb",   use = "photoshop" },
+  { url = "*.epr",   use = "media_encoder" },
+  { url = "*.c4d",   use = "cinema4d" },
+  { url = "*.drp",   use = "resolve" },
+  { url = "*.docx",  use = "word" },
+  { url = "*.doc",   use = "word" },
+  { url = "*.xlsx",  use = "excel" },
+  { url = "*.xls",   use = "excel" },
+  { url = "*.pptx",  use = "powerpoint" },
+  { url = "*.ppt",   use = "powerpoint" },
+  { url = "*.pdf",   use = "pdf" },
+]

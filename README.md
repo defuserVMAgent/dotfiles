@@ -7,10 +7,15 @@ Stow-managed dotfiles: tmux, yazi, Neovim, Ghostty, lazygit, delta and the Claud
 ```bash
 git clone https://github.com/defuserVMAgent/dotfiles.git ~/dotfiles
 cd ~/dotfiles
+mkdir -p ~/.config ~/.claude ~/.local/bin   # must exist first, see below
 stow */
 ```
 
 Needs [GNU Stow](https://www.gnu.org/software/stow/) (`brew install stow`).
+
+Why the `mkdir`: if a target directory doesn't exist, Stow "folds" it into a single symlink to the repo. A folded `~/.claude` or `~/.local` would make Claude Code (credentials, session history) and other tools write their state straight into this public repo. Pre-created, they get per-file symlinks instead.
+
+If a target file already exists as a regular file (e.g. an old `~/.claude/statusline.sh`), Stow refuses with a conflict; move it out of the way and re-run.
 
 lazygit/delta extras:
 

@@ -1,6 +1,6 @@
 # dotfiles
 
-Stow-managed dotfiles: tmux, yazi, Neovim, Ghostty, lazygit and delta, themed tokyonight night across the board.
+Stow-managed dotfiles: tmux, yazi, Neovim, Ghostty, lazygit, delta and the Claude Code status line, themed tokyonight night across the board.
 
 ## Install
 
@@ -21,6 +21,8 @@ bat cache --build   # compiles bat/.config/bat/themes — delta reads bat's cach
 ln -sf ~/.config/lazygit/config.yml ~/Library/Application\ Support/lazygit/config.yml
 ```
 
+Claude Code status line + tmux hooks: `brew install jq`, then merge `settings.tmux.json` into `~/.claude/settings.json` (command in [tmux: Claude Code usage + tab colors](#tmux-claude-code-usage--tab-colors)).
+
 ## Packages
 
 - `ghostty` — Ghostty terminal (`~/.config/ghostty/config`; Ghostty reads the XDG path on macOS)
@@ -30,6 +32,7 @@ ln -sf ~/.config/lazygit/config.yml ~/Library/Application\ Support/lazygit/confi
 - `lazygit` — lazygit (`~/.config/lazygit/config.yml`, symlinked from Application Support); diffs rendered by delta, side-by-side when the pane is >160 cols, `|` cycles to git's plain diff
 - `git` — `~/.config/git/config`: delta as git's pager. Git reads it *alongside* `~/.gitconfig`, which stays unstowed for identity/credentials
 - `bat` — bat config + the tokyonight `.tmTheme` delta uses for syntax highlighting
+- `claude` — Claude Code status line (`~/.claude/statusline.sh`) and the tmux tab-color hooks (`~/.claude/settings.tmux.json`, merged into `settings.json` by hand — see below)
 
 ## Theme
 
@@ -52,14 +55,23 @@ Catppuccin notes for the next switch: the mocha background is darkened one step 
 
 The right side of the status bar shows Claude Code plan usage for the 5-hour and weekly windows (`5h ▓▓░░░ 42% · 2 hr  wk ▓░░░░ 18% · 4 days`), and window tabs recolor by Claude state: orange = working, red = wants input, cleared when finished. No API calls — Claude Code pipes a JSON blob (incl. `rate_limits` on Pro/Max logins) to its `statusLine` command on every render.
 
-Two halves live outside this repo, in `~/.claude`, and are not stowed:
+The Claude Code half lives in the `claude` package:
 
-- `~/.claude/statusline.sh` renders the in-Claude status line and writes the usage numbers to `~/.cache/claude-usage/usage`. Wired up via `statusLine` in `~/.claude/settings.json`.
+- `~/.claude/statusline.sh` renders the in-Claude status line (`model · effort · context %`, the percentage green/yellow/red at 50/80 %) and writes the usage numbers to `~/.cache/claude-usage/usage`. Wired up via `statusLine` in `~/.claude/settings.json`.
 - `hooks` in `~/.claude/settings.json` (`UserPromptSubmit`/`PostToolUse` → orange, `Notification` → red, `Stop`/`SessionStart`/`SessionEnd` → clear) color the tab with `tmux set-window-option -t "$TMUX_PANE" window-status-style`.
 
-The stowed half: `tmux/.local/bin/tmux-claude-usage` reads the cache and prints the segment (pure bash, runs every `status-interval`), and `tmux/.tmux.conf` calls it from `status-right` and carries the `after-select-window` hook that clears a red tab when you visit it (Claude's idle notification lands ~60 s after `Stop`, so without it red would stick on idle sessions).
+`settings.json` itself is not stowed: it also holds machine-local plugins and preferences, and Claude Code rewrites it. Its `statusLine` and `hooks` keys are kept in `claude/.claude/settings.tmux.json`; merge them in once after stowing (this replaces any existing `statusLine`/`hooks` keys wholesale):
 
-Constraints: `window-status-format` must have no `fg=` pin or it overrides the hook color. The orange `#ff9e64` and red `#f7768e` must stay paired between the settings.json hooks and the `after-select-window` match pattern. Numbers refresh only while some Claude session is rendering on this machine; API-key/Bedrock/Team sessions don't receive `rate_limits`, so the segment stays empty there. The stowed script is pure bash; the `~/.claude/statusline.sh` half needs `jq`.
+```bash
+jq -s '.[0] * .[1]' ~/.claude/settings.json ~/.claude/settings.tmux.json > /tmp/settings.json \
+  && mv /tmp/settings.json ~/.claude/settings.json
+```
+
+If you change the hooks in `settings.json`, copy them back into `settings.tmux.json` so the repo stays in sync.
+
+The tmux half: `tmux/.local/bin/tmux-claude-usage` reads the cache and prints the segment (pure bash, runs every `status-interval`), and `tmux/.tmux.conf` calls it from `status-right` and carries the `after-select-window` hook that clears a red tab when you visit it (Claude's idle notification lands ~60 s after `Stop`, so without it red would stick on idle sessions).
+
+Constraints: `window-status-format` must have no `fg=` pin or it overrides the hook color. The orange `#ff9e64` and red `#f7768e` must stay paired between the settings.json hooks and the `after-select-window` match pattern. Numbers refresh only while some Claude session is rendering on this machine; API-key/Bedrock/Team sessions don't receive `rate_limits`, so the segment stays empty there. `statusline.sh` needs `jq`; the tmux script is pure bash.
 
 ## Yazi: yank to system clipboard (macOS)
 

@@ -4,4 +4,4 @@
 
 - Every top-level directory is a GNU Stow package mirroring `$HOME` (e.g. `nvim/.config/nvim/` → `~/.config/nvim/`). Files at the repo root (`README.md`, `CLAUDE.md`, `.gitignore`) are not stowed.
 - When you add, remove or change a feature, update `README.md` in the same change. It is the single source of context for this repo.
-- This repo is **public**. Never commit secrets, tokens, emails, hostnames, absolute `/Users/...` paths or other personal information. Identity and credentials stay in the unstowed `~/.gitconfig`, and the Claude Code half of the tmux integration stays in `~/.claude`.
+- This repo is **public**. Never commit secrets, tokens, emails, hostnames, absolute `/Users/...` paths or other personal information. Identity and credentials stay in the unstowed `~/.gitconfig`. `~/.claude/settings.json` is not stowed (machine-local plugins); only its `statusLine`/`hooks` keys are mirrored in `claude/.claude/settings.tmux.json`.
